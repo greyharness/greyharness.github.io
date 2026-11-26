@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>greyharness</title>
+<meta name="description" content="QA automation. Mobile, web and API testing.">
+<style>
+  :root {
+    --bg: #0d1117;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --line: #21262d;
+    --accent: #6fd6bd;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 72px 16px 96px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; letter-spacing: .02em; }
+  h1 span { color: var(--accent); }
+  .tag { color: var(--muted); margin: 0 0 56px; }
+  h2 {
+    font-size: 13px; font-weight: 500; text-transform: lowercase; letter-spacing: .08em;
+    color: var(--muted); margin: 48px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  p { margin: 0 0 12px; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  li:last-child { border-bottom: 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .stack { color: var(--muted); font-size: 14px; }
+  footer { margin-top: 72px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1><span>&gt;</span> greyharness</h1>
+  <p class="tag">qa automation · mobile, web, api</p>
+
+  <h2>work</h2>
+  <p>I test an industrial maintenance app, Android tablet and web. Started out testing by hand, then built the automation around it.</p>
+  <ul>
+    <li>End-to-end suite across web and mobile in Python and pytest. Create on web, complete on the tablet, check it back on web.
+      <div class="sub">1,500+ recorded runs</div></li>
+    <li>Test IDs added to the app's source so tests stop breaking every release, plus an audit that flags anything missing one.</li>
+    <li>Emulator rig that runs the tests and says whether a failure was the app, the test or the setup.</li>
+    <li>Dashboard that picks up tickets ready for QA, runs the matching test five times and posts the result on the ticket.</li>
+    <li>Red-team testing on an AI assistant. Got data out of it that a low-level user shouldn't see, and wrote up how.</li>
+  </ul>
+  <p class="sub" style="margin-top:12px">That code belongs to the company, so it isn't public.</p>
+
+  <h2>public</h2>
+  <ul>
+    <li><a href="https://github.com/greyharness/qa-automation-showcase">qa-automation-showcase</a>
+      <div class="sub">UI, API and Android tests on public demo apps. Catches the demo site's planted bugs, labels failures as app, test or environment, and checks for flaky tests every night.</div>
+      <div class="sub"><a href="https://greyharness.github.io/qa-automation-showcase/">latest test reports</a> · <a href="https://github.com/greyharness/qa-automation-showcase/blob/main/BUGS.md">bugs found</a></div></li>
+  </ul>
+
+  <h2>stack</h2>
+  <p class="stack">python · pytest · playwright · appium · selenium · requests · android sdk / adb · github actions</p>
+
+  <h2>on the side</h2>
+  <p>Reverse engineering. Ghidra, x64dbg, crackmes.</p>
+
+  <footer><a href="https://github.com/greyharness">github.com/greyharness</a></footer>
+</main>
+</body>
+</html>
