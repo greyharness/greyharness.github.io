@@ -5,112 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>greyharness</title>
 <meta name="description" content="QA automation. Mobile, web and API testing.">
+<meta name="theme-color" content="#020f14">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="greyharness">
+<meta property="og:description" content="QA automation. Mobile, web and API testing.">
+<meta property="og:image" content="https://greyharness.github.io/og.jpg">
 <style>
   :root {
-    --bg: #0b0f14;
-    --panel: #10161d;
-    --text: #c9d1d9;
-    --muted: #7d8590;
-    --line: #1c232c;
-    --accent: #6fd6bd;
-    --accent-dim: rgba(111, 214, 189, .12);
-    --red: #f2777a;
+    --void: #010202;
+    --bg: #020f14;
+    --deep: #05222e;
+    --panel: rgba(9, 56, 72, .28);
+    --edge: rgba(103, 178, 160, .18);
+    --teal: #125362;
+    --sea: #2f797d;
+    --mint: #67b2a0;
+    --glow: #a8eacb;
+    --text: #d6ece4;
+    --muted: #7fa39b;
+    --red: #f08a8a;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--bg);
     color: var(--text);
+    background: radial-gradient(1200px 800px at 75% -10%, var(--deep), transparent 60%),
+                radial-gradient(900px 700px at -10% 110%, rgba(18, 83, 98, .35), transparent 60%),
+                var(--bg);
     font: 15px/1.7 ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
     overflow-x: hidden;
+    min-height: 100vh;
   }
-  /* faint grid that drifts slowly */
-  body::before {
-    content: ""; position: fixed; inset: -40px; z-index: -2;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: .35;
-    mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 75%);
-    animation: drift 40s linear infinite;
-  }
-  /* soft glow behind the header */
+  /* fine scanlines over everything, very faint */
   body::after {
-    content: ""; position: fixed; z-index: -1; top: -200px; left: 50%; width: 600px; height: 400px;
-    transform: translateX(-50%);
-    background: radial-gradient(closest-side, var(--accent-dim), transparent);
-    pointer-events: none;
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+    background: repeating-linear-gradient(0deg, rgba(168, 234, 203, .018) 0 1px, transparent 1px 3px);
   }
-  @keyframes drift { to { transform: translate(40px, 40px); } }
 
-  main { max-width: 680px; margin: 0 auto; padding: 88px 16px 96px; }
+  main { max-width: 980px; margin: 0 auto; padding: 0 20px 96px; }
 
-  header { margin-bottom: 64px; }
-  h1 { font-size: 26px; font-weight: 600; margin: 0; letter-spacing: .01em; }
-  h1 .p { color: var(--accent); margin-right: 10px; }
-  .cursor { display: inline-block; width: .6ch; height: 1.1em; background: var(--accent); vertical-align: -3px; margin-left: 4px; animation: blink 1.1s steps(1) infinite; }
+  /* hero */
+  .hero {
+    min-height: 92vh; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 48px;
+  }
+  .orb-wrap { position: relative; justify-self: center; width: min(420px, 80vw); aspect-ratio: 1; }
+  .orb-wrap::before {
+    content: ""; position: absolute; inset: -12%; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(168, 234, 203, .22), rgba(47, 121, 125, .1) 55%, transparent 72%);
+    filter: blur(8px); animation: breathe 6s ease-in-out infinite;
+  }
+  .orb {
+    position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 0 0 1px var(--edge), 0 30px 80px rgba(0, 0, 0, .6);
+  }
+  .orb img { width: 100%; height: 100%; object-fit: cover; display: block; animation: spin 90s linear infinite; }
+  .ring {
+    position: absolute; inset: -6%; border-radius: 50%; border: 1px dashed rgba(103, 178, 160, .25);
+    animation: spin 60s linear infinite reverse;
+  }
+  .ring.two { inset: -14%; border-style: solid; border-color: rgba(103, 178, 160, .08); animation-duration: 120s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes breathe { 50% { opacity: .55; transform: scale(.96); } }
+
+  .kicker { color: var(--mint); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; margin: 0 0 18px; }
+  h1 {
+    font-size: clamp(40px, 7vw, 68px); line-height: 1; margin: 0; font-weight: 700; letter-spacing: -.02em;
+    background: linear-gradient(100deg, var(--glow), var(--mint) 45%, var(--sea));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .cursor { display: inline-block; width: .5ch; height: .85em; background: var(--glow); margin-left: 6px; vertical-align: -2px; animation: blink 1.1s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-  .tag { color: var(--muted); margin: 6px 0 0; min-height: 1.7em; }
+  .tag { color: var(--muted); margin: 18px 0 0; min-height: 1.7em; font-size: 16px; }
 
   .status {
-    margin-top: 28px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px;
-    background: var(--panel); font-size: 13px; color: var(--muted);
-    display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center;
+    margin-top: 32px; padding: 14px 16px; border: 1px solid var(--edge); border-radius: 12px;
+    background: var(--panel); backdrop-filter: blur(6px);
+    display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: center; font-size: 13px; max-width: 360px;
   }
-  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent); animation: pulse 2.4s infinite; display: inline-block; margin-right: 8px; vertical-align: 1px; }
-  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(111,214,189,.5); } 70% { box-shadow: 0 0 0 8px rgba(111,214,189,0); } 100% { box-shadow: 0 0 0 0 rgba(111,214,189,0); } }
-  .status img { height: 20px; display: block; }
   .status .k { color: var(--text); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--glow); display: inline-block; margin-right: 10px; vertical-align: 1px; animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(168,234,203,.5); } 70% { box-shadow: 0 0 0 8px rgba(168,234,203,0); } 100% { box-shadow: 0 0 0 0 rgba(168,234,203,0); } }
+  .status img { height: 20px; display: block; }
 
+  .scroll { margin-top: 40px; color: var(--muted); font-size: 12px; letter-spacing: .2em; text-decoration: none; display: inline-block; }
+  .scroll span { display: inline-block; animation: nudge 2s ease-in-out infinite; }
+  @keyframes nudge { 50% { transform: translateY(4px); } }
+
+  /* sections */
+  section { margin-top: 72px; }
   h2 {
-    font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--muted); margin: 56px 0 14px; display: flex; align-items: center; gap: 12px;
+    font-size: 12px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 22px; display: flex; align-items: center; gap: 14px;
   }
-  h2::before { content: attr(data-n); color: var(--accent); }
-  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  h2::before { content: attr(data-n); color: var(--glow); }
+  h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--edge), transparent); }
+  .lead { max-width: 640px; color: var(--text); }
+  .muted { color: var(--muted); font-size: 13px; }
 
-  p { margin: 0 0 12px; }
-  ul { list-style: none; padding: 0; margin: 0; }
-  .work li {
-    position: relative; padding: 12px 14px 12px 18px; margin: 0 -14px 2px; border-radius: 6px;
-    transition: background .2s, transform .2s;
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+  .tile {
+    position: relative; padding: 18px 18px 16px; border: 1px solid var(--edge); border-radius: 12px; background: var(--panel);
+    transition: transform .25s, border-color .25s, background .25s; overflow: hidden;
   }
-  .work li::before {
-    content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px;
-    background: var(--line); transition: background .2s;
+  .tile::before {
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .25s;
+    background: radial-gradient(400px 160px at var(--mx, 50%) var(--my, 0%), rgba(168, 234, 203, .12), transparent 60%);
   }
-  .work li:hover { background: var(--panel); transform: translateX(4px); }
-  .work li:hover::before { background: var(--accent); }
-  .sub { color: var(--muted); font-size: 13px; }
+  .tile:hover { transform: translateY(-3px); border-color: rgba(168, 234, 203, .45); }
+  .tile:hover::before { opacity: 1; }
+  .tile b { display: block; color: var(--glow); font-weight: 600; margin-bottom: 6px; }
+  .tile p { margin: 0; color: var(--text); font-size: 14px; }
+  .tile .muted { margin-top: 8px; display: block; }
 
-  .card {
-    display: block; padding: 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel);
-    color: inherit; text-decoration: none; transition: border-color .2s, transform .2s;
+  .project {
+    display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; text-decoration: none; color: inherit;
+    padding: 22px; border: 1px solid var(--edge); border-radius: 14px;
+    background: linear-gradient(135deg, rgba(18, 83, 98, .35), rgba(5, 34, 46, .4));
+    transition: transform .25s, border-color .25s;
   }
-  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .card .name { color: var(--accent); font-weight: 600; }
-  .links { margin-top: 10px; font-size: 13px; }
-  .links a { color: var(--accent); text-decoration: none; margin-right: 14px; }
-  .links a:hover { text-decoration: underline; }
-  .bugs { margin-top: 12px; font-size: 13px; color: var(--muted); }
-  .bugs b { color: var(--red); font-weight: 600; }
+  .project:hover { transform: translateY(-3px); border-color: var(--mint); }
+  .project .name { color: var(--glow); font-weight: 700; font-size: 17px; }
+  .project .stat { text-align: right; }
+  .project .stat strong { display: block; font-size: 40px; line-height: 1; color: var(--red); }
+  .links { margin-top: 14px; font-size: 13px; }
+  .links a { color: var(--mint); text-decoration: none; margin-right: 18px; border-bottom: 1px solid transparent; }
+  .links a:hover { border-color: var(--mint); }
 
   .stack { display: flex; flex-wrap: wrap; gap: 8px; }
   .stack span {
-    font-size: 13px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted);
-    transition: color .2s, border-color .2s;
+    font-size: 13px; padding: 4px 12px; border: 1px solid var(--edge); border-radius: 999px; color: var(--muted);
+    background: rgba(2, 15, 20, .6); transition: color .2s, border-color .2s, box-shadow .2s;
   }
-  .stack span:hover { color: var(--accent); border-color: var(--accent); }
+  .stack span:hover { color: var(--glow); border-color: var(--mint); box-shadow: 0 0 16px rgba(103, 178, 160, .25); }
 
-  a { color: var(--accent); }
-  footer { margin-top: 80px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  footer a { text-decoration: none; }
+  footer {
+    margin-top: 96px; padding-top: 22px; border-top: 1px solid var(--edge);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 13px;
+  }
+  footer a { color: var(--mint); text-decoration: none; }
 
-  .reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
 
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 56px; gap: 36px; }
+    .orb-wrap { order: -1; width: min(260px, 70vw); }
+    .project { grid-template-columns: 1fr; }
+    .project .stat { text-align: left; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .reveal { opacity: 1; transform: none; }
@@ -119,44 +165,56 @@
 </head>
 <body>
 <main>
-  <header>
-    <h1><span class="p">&gt;</span><span id="name">greyharness</span><span class="cursor"></span></h1>
-    <p class="tag" id="tag">qa automation · mobile, web, api</p>
+  <div class="hero">
+    <div>
+      <p class="kicker">qa automation</p>
+      <h1>greyharness<span class="cursor"></span></h1>
+      <p class="tag" id="tag">mobile, web and api testing. i build the tools that do the testing.</p>
 
-    <div class="status">
-      <span><span class="dot"></span><span class="k">tests</span></span>
-      <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/tests.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/tests.yml/badge.svg" alt="web and api tests"></a>
-      <span><span class="dot"></span><span class="k">mobile</span></span>
-      <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/mobile.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/mobile.yml/badge.svg" alt="android tests"></a>
-      <span><span class="dot"></span><span class="k">flaky</span></span>
-      <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/flaky.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/flaky.yml/badge.svg" alt="nightly flaky check"></a>
+      <div class="status">
+        <span><span class="dot"></span><span class="k">web + api</span></span>
+        <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/tests.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/tests.yml/badge.svg" alt="web and api tests"></a>
+        <span><span class="dot"></span><span class="k">android</span></span>
+        <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/mobile.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/mobile.yml/badge.svg" alt="android tests"></a>
+        <span><span class="dot"></span><span class="k">flaky</span></span>
+        <a href="https://github.com/greyharness/qa-automation-showcase/actions/workflows/flaky.yml"><img src="https://github.com/greyharness/qa-automation-showcase/actions/workflows/flaky.yml/badge.svg" alt="nightly flaky check"></a>
+      </div>
+
+      <a class="scroll" href="#work">scroll <span>↓</span></a>
     </div>
-  </header>
+    <div class="orb-wrap" aria-hidden="true">
+      <div class="ring two"></div>
+      <div class="ring"></div>
+      <div class="orb"><img src="art.jpg" alt=""></div>
+    </div>
+  </div>
 
-  <section class="reveal">
+  <section id="work" class="reveal">
     <h2 data-n="01">work</h2>
-    <p>I test an industrial maintenance app, Android tablet and web. Started out testing by hand, then built the automation around it.</p>
-    <ul class="work">
-      <li>End-to-end suite across web and mobile in Python and pytest. Create on web, complete on the tablet, check it back on web.
-        <div class="sub">1,500+ recorded runs</div></li>
-      <li>Test IDs added to the app's source so tests stop breaking every release, plus an audit that flags anything missing one.</li>
-      <li>Emulator rig that runs the tests and says whether a failure was the app, the test or the setup.</li>
-      <li>Dashboard that picks up tickets ready for QA, runs the matching test five times and posts the result on the ticket.</li>
-      <li>Red-team testing on an AI assistant. Got data out of it that a low-level user shouldn't see, and wrote up how.</li>
-    </ul>
-    <p class="sub" style="margin-top:14px">That code belongs to the company, so it isn't public.</p>
+    <p class="lead">I test an industrial maintenance app, Android tablet and web. Started out testing by hand, then built the automation around it.</p>
+    <div class="grid">
+      <div class="tile"><b>end-to-end suite</b><p>Web and mobile in one flow. Create on web, complete on the tablet, check it back on web.</p><span class="muted">python · pytest · 1,500+ runs</span></div>
+      <div class="tile"><b>test ids in the app</b><p>Patched into the app's source every release so tests stop breaking, with an audit for anything missed.</p></div>
+      <div class="tile"><b>emulator rig</b><p>One emulator per environment. Runs the tests and says whether a failure was the app, the test or the setup.</p></div>
+      <div class="tile"><b>ticket to verdict</b><p>Picks up tickets ready for QA, runs the matching test five times, posts the result on the ticket.</p></div>
+      <div class="tile"><b>red team</b><p>Got data out of an in-app AI assistant that a low-level user shouldn't see, and wrote up how.</p></div>
+    </div>
+    <p class="muted" style="margin-top:16px">That code belongs to the company, so it isn't public.</p>
   </section>
 
   <section class="reveal">
     <h2 data-n="02">public</h2>
-    <a class="card" href="https://github.com/greyharness/qa-automation-showcase">
-      <div class="name">qa-automation-showcase</div>
-      <div class="sub" style="margin-top:6px">UI, API and Android tests on public demo apps. Labels every failure as app, test or environment, and runs a flaky check every night.</div>
-      <div class="bugs"><b>10</b> planted bugs caught on the demo shop, each with a test that goes red if it ever gets fixed.</div>
+    <a class="project" href="https://github.com/greyharness/qa-automation-showcase">
+      <div>
+        <div class="name">qa-automation-showcase</div>
+        <p style="margin:6px 0 0">UI, API and Android tests on public demo apps. Labels every failure as app, test or environment, and checks for flaky tests every night.</p>
+      </div>
+      <div class="stat"><strong>10</strong><span class="muted">planted bugs caught</span></div>
     </a>
     <div class="links">
       <a href="https://greyharness.github.io/qa-automation-showcase/">latest reports</a>
       <a href="https://github.com/greyharness/qa-automation-showcase/blob/main/BUGS.md">bugs found</a>
+      <a href="https://github.com/greyharness/qa-automation-showcase/actions">run history</a>
     </div>
   </section>
 
@@ -164,7 +222,7 @@
     <h2 data-n="03">stack</h2>
     <div class="stack">
       <span>python</span><span>pytest</span><span>playwright</span><span>appium</span><span>selenium</span>
-      <span>requests</span><span>android sdk</span><span>adb</span><span>github actions</span>
+      <span>requests</span><span>android sdk</span><span>adb</span><span>chrome devtools</span><span>github actions</span>
     </div>
   </section>
 
@@ -180,29 +238,43 @@
 </main>
 
 <script>
-  // types the tagline once on load
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // type the tagline once
   (function () {
-    var el = document.getElementById("tag");
-    var text = el.textContent;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var el = document.getElementById("tag"), text = el.textContent;
+    if (still) return;
     el.textContent = "";
     var i = 0;
-    (function step() {
-      el.textContent = text.slice(0, ++i);
-      if (i < text.length) setTimeout(step, 28 + Math.random() * 40);
-    })();
+    (function step() { el.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 22 + Math.random() * 35); })();
   })();
 
-  // sections fade in as you scroll
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
+  // fade sections in on scroll
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
   document.querySelectorAll(".reveal").forEach(function (s) { io.observe(s); });
 
-  // small live clock in UTC
+  // tiles glow where the pointer is
+  document.querySelectorAll(".tile").forEach(function (t) {
+    t.addEventListener("pointermove", function (ev) {
+      var r = t.getBoundingClientRect();
+      t.style.setProperty("--mx", (ev.clientX - r.left) + "px");
+      t.style.setProperty("--my", (ev.clientY - r.top) + "px");
+    });
+  });
+
+  // orb leans slightly toward the pointer
+  var orb = document.querySelector(".orb-wrap");
+  if (!still && orb) {
+    window.addEventListener("pointermove", function (ev) {
+      var x = (ev.clientX / innerWidth - .5) * 10, y = (ev.clientY / innerHeight - .5) * 10;
+      orb.style.transform = "translate(" + x + "px," + y + "px)";
+    });
+  }
+
   (function tick() {
-    var d = new Date();
-    document.getElementById("clock").textContent = d.toISOString().slice(11, 19) + " utc";
+    document.getElementById("clock").textContent = new Date().toISOString().slice(11, 19) + " utc";
     setTimeout(tick, 1000);
   })();
 </script>
